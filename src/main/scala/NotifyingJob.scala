@@ -3,15 +3,13 @@ package org.nlogo.ls
 import org.nlogo.agent.AgentSet
 import org.nlogo.api.{ExtensionException, JobOwner}
 import org.nlogo.core.LogoList
-import org.nlogo.nvm.{ConcurrentJob, Job, Procedure}
-import org.nlogo.workspace.AbstractWorkspaceScala
+import org.nlogo.nvm.{ConcurrentJob, ExclusiveJob, Job, Procedure}
 
 class NotifyingJob(override val notifyObject: AnyRef,
-                   workspace: AbstractWorkspaceScala,
                    owner: JobOwner,
                    agentSet: AgentSet,
                    procedure: Procedure)
-extends ConcurrentJob(owner, agentSet, procedure, 0, null, workspace, owner.random)
+extends ConcurrentJob(owner, agentSet, procedure, 0, null, owner.random, ExclusiveJob.initialComeUpForAir)
 with Notifying[AnyRef] {
 
   override def finish() = {

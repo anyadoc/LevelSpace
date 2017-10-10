@@ -14,7 +14,7 @@ import org.nlogo.app.codetab.CodeTab
 import org.nlogo.awt.UserCancelException
 import org.nlogo.fileformat
 import org.nlogo.swing.FileDialog
-import org.nlogo.workspace.{AbstractWorkspaceScala, ModelsLibrary, ModelTracker, SaveModel}
+import org.nlogo.workspace.{AbstractWorkspace, ModelsLibrary, ModelTracker, SaveModel}
 
 import scala.collection.JavaConversions._
 
@@ -22,7 +22,7 @@ trait ModelManager {
   def removeTab(tab: ModelCodeTab): Unit
   def existingTab(filePath: String): Option[CodeTab]
   def registerTab(filePath: String)
-                 (f: AbstractWorkspaceScala => ModelCodeTab): Option[ModelCodeTab]
+                 (f: AbstractWorkspace => ModelCodeTab): Option[ModelCodeTab]
 }
 
 class LevelSpaceMenu(tabs: Tabs, val backingModelManager: ModelManager)

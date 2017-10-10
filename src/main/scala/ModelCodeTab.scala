@@ -14,11 +14,11 @@ import org.nlogo.fileformat
 import org.nlogo.swing.{ ToolBar, ToolBarActionButton, OptionDialog }, ToolBar.Separator
 import org.nlogo.util.Utils
 import org.nlogo.window.Events.ModelSavedEvent
-import org.nlogo.workspace.{ AbstractWorkspaceScala, ModelTracker, OpenModel, OpenModelFromURI, SaveModel, ModelsLibrary }
+import org.nlogo.workspace.{ AbstractWorkspace, ModelTracker, OpenModel, OpenModelFromURI, SaveModel, ModelsLibrary }
 
 import java.nio.file.Paths
 
-class ModelCodeTab(workspace: AbstractWorkspaceScala, tabs: Tabs, modelManager: ModelManager)
+class ModelCodeTab(workspace: AbstractWorkspace, tabs: Tabs, modelManager: ModelManager)
 extends CodeTab(workspace, tabs)
 with ModelSavedEvent.Handler {
   val tabName            = workspace.getModelFileName
@@ -115,7 +115,7 @@ with ModelSavedEvent.Handler {
     }
     currentModel = currentModel.map(_.copy(code = innerSource)) orElse Some(Model(code = innerSource))
     currentModel.foreach { model =>
-      SaveModel(model, loader, controller, workspace, Version).foreach {
+      SaveModel(model, loader, controller, workspace.modelTracker, Version).foreach {
         _.apply().foreach { _ =>
           changedSourceWarning()
           dirty = false

@@ -53,13 +53,13 @@ class GUIChildModel @throws(classOf[InterruptedException]) @throws(classOf[Exten
   }
 
   def setSpeed(d: Double): Unit = {
-    workspace.updateManager().speed = d
+    workspace.updateManager.speed = d
     onEDT {
       panel.speedSlider.setValue((d * 2).intValue)
       // Wakes up the workspace if the speed slider is super low.
       // Makes it so there's not a long pause after increasing
       // the speed slider from a low position. BCH 6/18/2016
-      workspace.updateManager().nudgeSleeper
+      workspace.updateManager.nudgeSleeper
     }
   }
 

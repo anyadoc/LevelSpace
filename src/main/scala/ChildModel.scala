@@ -1,7 +1,7 @@
 package org.nlogo.ls
 
 import org.nlogo.api.{CommandRunnable, Workspace, World}
-import org.nlogo.workspace.AbstractWorkspaceScala
+import org.nlogo.workspace.AbstractWorkspace
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -46,7 +46,7 @@ abstract class ChildModel(val parentWorkspace: Workspace, val modelID: Int)  {
   def frame: Option[JFrame]
 
   def setSpeed(d: Double)
-  def workspace: AbstractWorkspaceScala
+  def workspace: AbstractWorkspace
 
   def usesLevelSpace = {
     workspace.getExtensionManager.loadedExtensions.asScala.exists(

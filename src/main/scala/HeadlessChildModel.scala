@@ -7,13 +7,13 @@ import org.nlogo.api._
 import org.nlogo.headless.HeadlessWorkspace
 import org.nlogo.ls.gui.ViewFrame
 import org.nlogo.nvm.HaltException
-import org.nlogo.workspace.AbstractWorkspaceScala
+import org.nlogo.workspace.AbstractWorkspace
 
 @throws(classOf[InterruptedException])
 @throws(classOf[ExtensionException])
 @throws(classOf[HaltException])
 @throws(classOf[IOException])
-class HeadlessChildModel (parentWorkspace: AbstractWorkspaceScala, path: String, modelID: Int)
+class HeadlessChildModel (parentWorkspace: AbstractWorkspace, path: String, modelID: Int)
   extends ChildModel(parentWorkspace, modelID) {
 
   val world: World with CompilationManagement = if(Version.is3D) new World3D() else new World2D()
@@ -28,6 +28,13 @@ class HeadlessChildModel (parentWorkspace: AbstractWorkspaceScala, path: String,
       frame.foreach { f => onEDT {
         new org.nlogo.window.Events.OutputEvent(false, oo, false, !toOutputArea).raise(f)
       }}
+    }
+
+    override def requestDisplayUpdate(force: Boolean): Unit = {
+      super.requestDisplayUpdate(force)
+      frame.foreach { f => onEDT {
+        new org.nlogo.window.Events.PeriodicUpdateEvent().raise(f)
+      } }
     }
   }
 

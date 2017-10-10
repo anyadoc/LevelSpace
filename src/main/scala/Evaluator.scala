@@ -5,9 +5,9 @@ import org.nlogo.api.{ExtensionException, SimpleJobOwner, World}
 import org.nlogo.core.{AgentKind, LogoList, Nobody}
 import org.nlogo.nvm.{Procedure, Reporter}
 import org.nlogo.prim.{_constboolean, _constdouble, _constlist, _conststring, _nobody}
-import org.nlogo.workspace.AbstractWorkspaceScala
+import org.nlogo.workspace.AbstractWorkspace
 
-class Evaluator(modelID: Int, name: String, ws: AbstractWorkspaceScala, parentWorld: World) {
+class Evaluator(modelID: Int, name: String, ws: AbstractWorkspace, parentWorld: World) {
 
   val owner = new SimpleJobOwner(name, ws.world.mainRNG, AgentKind.Observer)
 
@@ -34,7 +34,7 @@ class Evaluator(modelID: Int, name: String, ws: AbstractWorkspaceScala, parentWo
       val fullArgs = LogoList.fromVector(args.toVector) +: lets.map(_._2)
 
       val proc = runner(getLambda(fullCode), fullArgs)
-      val job = new NotifyingJob(parentWorld, ws, owner, ws.world.observers, proc)
+      val job = new NotifyingJob(parentWorld, owner, ws.world.observers, proc)
       ws.jobManager.addJob(job, waitForCompletion = false)
 
       job.map {
